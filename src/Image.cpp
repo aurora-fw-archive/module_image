@@ -126,14 +126,14 @@ namespace AuroraFW {
 			// TODO: Implement
 		}
 
-		bool Image::drawPixel(int x, int y, GEngine::ColorF& color)
+		bool Image::drawPixel(int x, int y, GEngine::Color& color)
 		{
 			if(isReadOnly())
 				throw ImageIsReadOnlyException();
 			
-			_color.rgbRed = color.redF();
-			_color.rgbGreen = color.greenF();
-			_color.rgbBlue = color.blueF();
+			_color.rgbRed = color.red();
+			_color.rgbGreen = color.green();
+			_color.rgbBlue = color.blue();
 			return FreeImage_SetPixelColor(_image, x, y, &_color);
 		}
 

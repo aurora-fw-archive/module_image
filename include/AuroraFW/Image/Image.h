@@ -101,7 +101,7 @@ namespace AuroraFW {
 			void clearPixel(int , int );
 			void clearImage();
 
-			bool drawPixel(int , int , GEngine::ColorF& );
+			bool drawPixel(int , int , GEngine::Color& );
 
 			bool saveImage();
 			
