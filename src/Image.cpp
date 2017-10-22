@@ -87,7 +87,6 @@ namespace AuroraFW {
 
 		Image::~Image()
 		{
-			delete _path;
 			FreeImage_Unload(_image);
 			AuroraFW::Debug::Log("The image was deleted from memory.");
 		}
