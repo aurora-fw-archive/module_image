@@ -79,19 +79,25 @@ namespace AuroraFW {
 						throw ImageAllocationFailedException(path);
 					}
 					AuroraFW::Debug::Log("Write flag: image didn't exist, space was allocated.");
+				} else {
+					AuroraFW::Debug::Log("Write flag: image existed.");
 				}
 			}
 		}
 
 		Image::~Image()
 		{
-			delete _image;
+			delete _path;
+			FreeImage_Unload(_image);
 			AuroraFW::Debug::Log("The image was deleted from memory.");
 		}
 
-		void Image::setFlags(ImageFlags flags)
+		void Image::convertTo32Bits()
 		{
-			_flags = flags;
+			FreeImage_Unload(_image);
+			FIBITMAP *_bitmap32 = FreeImage_ConvertTo32Bits(_image);;
+			*_image = *_bitmap32;
+			FreeImage_Unload(_bitmap32);
 		}
 
 		void Image::setReadOnly()
@@ -111,7 +117,7 @@ namespace AuroraFW {
 			_flags = _flags | (ImageFlags::Read | ImageFlags::Write);
 		}
 
-		void Image::setClearPixelColor(GEngine::Color color)
+		void Image::setClearPixelColor(const GEngine::Color& color)
 		{
 			// TODO: Implement
 		}
@@ -126,7 +132,7 @@ namespace AuroraFW {
 			// TODO: Implement
 		}
 
-		bool Image::drawPixel(int x, int y, GEngine::Color& color)
+		bool Image::drawPixel(int x, int y, const GEngine::Color& color)
 		{
 			if(isReadOnly())
 				throw ImageIsReadOnlyException();
@@ -134,6 +140,13 @@ namespace AuroraFW {
 			_color.rgbRed = color.red();
 			_color.rgbGreen = color.green();
 			_color.rgbBlue = color.blue();
+
+			if(color.alpha() != 255 && !is32Bit())
+				CLI::Log(CLI::Warning, "There are alpha values in the supplied color, however the image is not 32-bit.",
+				"The alpha information will be lost. If you want to use alpha, first convert the image to 32-bit.");
+			else
+				_color.rgbReserved = color.alpha();
+
 			return FreeImage_SetPixelColor(_image, x, y, &_color);
 		}
 

@@ -92,16 +92,19 @@ namespace AuroraFW {
 			bool isWriteOnly() const;
 			bool isReadAndWrite() const;
 
-			void setFlags(ImageFlags );
+			bool is32Bit() const;
+			void convertTo32Bits();
+
+			void setFlags(const ImageFlags );
 			void setReadOnly();
 			void setWriteOnly();
 			void setReadAndWrite();
 
-			void setClearPixelColor(GEngine::Color );
+			void setClearPixelColor(const GEngine::Color& );
 			void clearPixel(int , int );
 			void clearImage();
 
-			bool drawPixel(int , int , GEngine::Color& );
+			bool drawPixel(int , int , const GEngine::Color& );
 
 			bool saveImage();
 			
@@ -117,19 +120,29 @@ namespace AuroraFW {
 		};
 
 		// Inline definitions
-		bool Image::isReadOnly() const
+		inline bool Image::isReadOnly() const
 		{
 			return (_flags & ImageFlags::Read) == ImageFlags::Read;
 		}
 
-		bool Image::isWriteOnly() const
+		inline bool Image::isWriteOnly() const
 		{
 			return (_flags & ImageFlags::Write) == ImageFlags::Write;
 		}
 
-		bool Image::isReadAndWrite() const
+		inline bool Image::isReadAndWrite() const
 		{
 			return (_flags & (ImageFlags::Read | ImageFlags::Write)) == (ImageFlags::Read | ImageFlags::Write);
+		}
+
+		inline bool Image::is32Bit() const
+		{
+			return FreeImage_GetBPP(_image) == 32;
+		}
+
+		inline void Image::setFlags(const ImageFlags flags)
+		{
+			_flags = flags;
 		}
 	}
 }
