@@ -116,6 +116,7 @@ namespace AuroraFW {
 
 			static bool _freeImageInitialised;
 			FIBITMAP *_image;
+			GEngine::Color _clearColor = GEngine::Color(0xFFFFFF);
 			RGBQUAD _color;
 		};
 
@@ -137,7 +138,7 @@ namespace AuroraFW {
 
 		inline bool Image::is32Bit() const
 		{
-			return FreeImage_GetBPP(_image) == 32;
+			return _bpp == 32;
 		}
 
 		inline void Image::setFlags(const ImageFlags flags)

@@ -70,6 +70,7 @@ namespace AuroraFW {
 				if(!_image) {
 					throw ImageNotFoundException(path);
 				}
+				_bpp = FreeImage_GetBPP(_image);
 			}
 
 			if(_flags & ImageFlags::Write) {
@@ -93,10 +94,11 @@ namespace AuroraFW {
 
 		void Image::convertTo32Bits()
 		{
+			FIBITMAP *_bitmap32 = FreeImage_ConvertTo32Bits(_image);
 			FreeImage_Unload(_image);
-			FIBITMAP *_bitmap32 = FreeImage_ConvertTo32Bits(_image);;
-			*_image = *_bitmap32;
+			_image = FreeImage_Clone(_bitmap32);
 			FreeImage_Unload(_bitmap32);
+			_bpp = 32;
 		}
 
 		void Image::setReadOnly()
