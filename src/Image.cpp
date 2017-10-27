@@ -90,11 +90,13 @@ namespace AuroraFW {
 
 		void Image::convertTo32Bits()
 		{
-			FIBITMAP *_bitmap32 = FreeImage_ConvertTo32Bits(_image);
-			FreeImage_Unload(_image);
-			_image = FreeImage_Clone(_bitmap32);
-			FreeImage_Unload(_bitmap32);
-			_bpp = 32;
+			if(_bpp != 32) {
+				FIBITMAP *_bitmap32 = FreeImage_ConvertTo32Bits(_image);
+				FreeImage_Unload(_image);
+				_image = FreeImage_Clone(_bitmap32);
+				FreeImage_Unload(_bitmap32);
+				_bpp = 32;
+			}
 		}
 
 		void Image::setReadOnly()
