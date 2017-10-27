@@ -59,10 +59,11 @@ namespace AuroraFW {
 				_freeImageInitialised = true;
 			}
 
+			_image = FreeImage_Load(fif, path, 0);
+
 			if(_flags & ImageFlags::Read) {
 				// The user wants to read the file.
 				AuroraFW::Debug::Log("Read flag.");
-				_image = FreeImage_Load(fif, path, 0);
 				if(!_image) {
 					throw ImageNotFoundException(path);
 				}
