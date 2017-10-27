@@ -71,9 +71,9 @@ namespace AuroraFW {
 			}
 
 			if(_flags & ImageFlags::Write) {
-				if(_image == nullptr) {
+				if(!_image) {
 					_image = FreeImage_Allocate(_width, _height, _bpp);
-					if(_image == nullptr) {
+					if(!_image) {
 						throw ImageAllocationFailedException(path);
 					}
 					AuroraFW::Debug::Log("Write flag: image didn't exist, space was allocated.");
