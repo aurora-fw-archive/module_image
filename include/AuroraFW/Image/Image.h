@@ -70,19 +70,18 @@ namespace AuroraFW {
 		class ImageIsReadOnlyException: public std::exception
 		{
 		public:
-			ImageIsReadOnlyException();
+			ImageIsReadOnlyException() {}
 			virtual const char* what() const throw();
 		};
 
 		class ImageIsWriteOnlyException: public std::exception
 		{
 		public:
-			ImageIsWriteOnlyException();
+			ImageIsWriteOnlyException() {}
 			virtual const char* what() const throw();
 		};
 
-		class AFW_EXPORT Image
-		{
+		class AFW_EXPORT Image {
 		public:
 			Image(FREE_IMAGE_FORMAT , const char* , ImageFlags = (ImageFlags::Read | ImageFlags::Write),
 			int = AFW_DONTCARE , int = AFW_DONTCARE , int = 32);

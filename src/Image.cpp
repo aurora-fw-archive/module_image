@@ -39,14 +39,10 @@ namespace AuroraFW {
 			return _path.c_str();
 		}
 
-		ImageIsReadOnlyException::ImageIsReadOnlyException() {}
-
 		const char* ImageIsReadOnlyException::what() const throw()
 		{
 			return "There was an attempt to edit a read-only image!";
 		}
-
-		ImageIsWriteOnlyException::ImageIsWriteOnlyException() {}
 		
 		const char* ImageIsWriteOnlyException::what() const throw()
 		{
