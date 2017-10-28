@@ -24,7 +24,8 @@ namespace AuroraFW {
 		bool Image::_freeImageInitialised = false;
 
 		ImageNotFoundException::ImageNotFoundException(const char *path)
-			: _path(std::string("The file " + std::string(path) + " couldn't be found/read!")) {}
+			: _path(std::string("The file " + std::string(path) + " couldn't be"
+			"found/read!")) {}
 
 		const char* ImageNotFoundException::what() const throw()
 		{
@@ -32,7 +33,8 @@ namespace AuroraFW {
 		}
 
 		ImageAllocationFailedException::ImageAllocationFailedException(const char *path)
-			: _path(std::string("The allocation for the image " + std::string(path) + " failed.")) {}
+			: _path(std::string("The allocation for the image " + std::string(path) +
+			" failed.")) {}
 
 		const char* ImageAllocationFailedException::what() const throw()
 		{
