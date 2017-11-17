@@ -85,7 +85,7 @@ namespace AuroraFW {
 		{
 		public:
 			Image(FREE_IMAGE_FORMAT , const char* , ImageFlags = (ImageFlags::Read | ImageFlags::Write),
-			int = AFW_DONTCARE , int = AFW_DONTCARE , int = 32);
+			int = AFW_DONTCARE , int = AFW_DONTCARE , int = 24);
 			~Image();
 		
 			bool isReadOnly() const;
