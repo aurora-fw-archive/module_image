@@ -24,7 +24,8 @@ namespace AuroraFW {
 		bool Image::_freeImageInitialised = false;
 
 		ImageNotFoundException::ImageNotFoundException(const char *path)
-			: _path(std::string("The file " + std::string(path) + " couldn't be found/read!")) {}
+			: _path(std::string("The file " + std::string(path) + " couldn't be"
+			"found/read!")) {}
 
 		const char* ImageNotFoundException::what() const throw()
 		{
@@ -32,21 +33,18 @@ namespace AuroraFW {
 		}
 
 		ImageAllocationFailedException::ImageAllocationFailedException(const char *path)
-			: _path(std::string("The allocation for the image " + std::string(path) + " failed.")) {}
+			: _path(std::string("The allocation for the image " + std::string(path) +
+			" failed.")) {}
 
 		const char* ImageAllocationFailedException::what() const throw()
 		{
 			return _path.c_str();
 		}
 
-		ImageIsReadOnlyException::ImageIsReadOnlyException() {}
-
 		const char* ImageIsReadOnlyException::what() const throw()
 		{
 			return "There was an attempt to edit a read-only image!";
 		}
-
-		ImageIsWriteOnlyException::ImageIsWriteOnlyException() {}
 		
 		const char* ImageIsWriteOnlyException::what() const throw()
 		{
@@ -63,19 +61,21 @@ namespace AuroraFW {
 				_freeImageInitialised = true;
 			}
 
+			_image = FreeImage_Load(fif, path, 0);
+
 			if(_flags & ImageFlags::Read) {
 				// The user wants to read the file.
 				AuroraFW::Debug::Log("Read flag.");
-				_image = FreeImage_Load(fif, path, 0);
 				if(!_image) {
 					throw ImageNotFoundException(path);
 				}
+				_bpp = FreeImage_GetBPP(_image);
 			}
 
 			if(_flags & ImageFlags::Write) {
-				if(_image == nullptr) {
+				if(!_image) {
 					_image = FreeImage_Allocate(_width, _height, _bpp);
-					if(_image == nullptr) {
+					if(!_image) {
 						throw ImageAllocationFailedException(path);
 					}
 					AuroraFW::Debug::Log("Write flag: image didn't exist, space was allocated.");
@@ -93,10 +93,13 @@ namespace AuroraFW {
 
 		void Image::convertTo32Bits()
 		{
-			FreeImage_Unload(_image);
-			FIBITMAP *_bitmap32 = FreeImage_ConvertTo32Bits(_image);;
-			*_image = *_bitmap32;
-			FreeImage_Unload(_bitmap32);
+			if(_bpp != 32) {
+				FIBITMAP *_bitmap32 = FreeImage_ConvertTo32Bits(_image);
+				FreeImage_Unload(_image);
+				_image = FreeImage_Clone(_bitmap32);
+				FreeImage_Unload(_bitmap32);
+				_bpp = 32;
+			}
 		}
 
 		void Image::setReadOnly()

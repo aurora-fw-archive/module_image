@@ -16,6 +16,13 @@
 ** will be met: https://www.gnu.org/licenses/lgpl-3.0.html.
 ****************************************************************************/
 
+/** @file AuroraFW/Image/Image.h
+ * ImageManager header. This contains an Image class used to
+ * handle images, and other things to complement said class
+ * (such as ImageFlags, ImageExceptions, etc...)
+ * @since snapshot20171022
+ */
+
 #ifndef AURORAFW_IMAGE_IMAGE_H
 #define AURORAFW_IMAGE_IMAGE_H
 
@@ -29,83 +36,281 @@
 
 namespace AuroraFW {
 	namespace ImageManager {
+
+		/**
+		 * An enum to indicate read/write flags for the class Image.
+		 * @since snapshot20171022
+		 */
 		enum ImageFlags {
-			Read = 		(1<<0),
-			Write =		(1<<1)
+			Read = 		(1<<0),	/**< Read flag. */
+			Write =		(1<<1)	/**< Write flag. */
 		};
 
+		/**
+		 * Operator defined internally to perform bitwise operations with ImageFlags.
+		 * @since snapshot20171022
+		 */
 		inline ImageFlags operator|(ImageFlags a, ImageFlags b)
 		{
 			return static_cast<ImageFlags>(static_cast<int>(a) | static_cast<int>(b));
 		}
 
+		/**
+		 * Operator defined internally to perform bitwise operations with ImageFlags.
+		 * @since snapshot20171022
+		 */
 		inline ImageFlags operator&(ImageFlags a, ImageFlags b)
 		{
 			return static_cast<ImageFlags>(static_cast<int>(a) & static_cast<int>(b));
 		}
 
+		/**
+		 * Operator defined internally to perform bitwise operations with ImageFlags.
+		 * @since snapshot20171022
+		 */
 		inline ImageFlags operator~(ImageFlags a)
 		{
 			return static_cast<ImageFlags>(~static_cast<int>(a));
 		}
 
+		/**
+		 * An exception to tell the user the given image couldn't be found
+		 * @since snapshot20171022
+		 */
 		class ImageNotFoundException: public std::exception
 		{
 		private:
 			const std::string _path;
 		public:
+			/**
+			 * The constructor of the exception.
+			 * @since snapshot20171022
+			 */
 			ImageNotFoundException(const char *);
+
+			/**
+			 * The exception's message:
+			 * <em>The file <path> couldn't be found/read!</em>
+			 * @since snapshot20171022
+			 */
 			virtual const char* what() const throw();
 		};
 
+		/**
+		 * An exception to indicate it was not possible to allocate space for the intended image.
+		 * @since snapshot20171022
+		 */
 		class ImageAllocationFailedException: public std::exception
 		{
 		private:
 			const std::string _path;
 		public:
+			/**
+			 * The constructor of the exception.
+			 * @since snapshot20171022
+			 */
 			ImageAllocationFailedException(const char *);
+
+			/**
+			 * The exception's message:
+			 * <em>The allocation for the image <path> failed.</em>
+			 * @since snapshot20171022
+			 */
 			virtual const char* what() const throw();
 		};
 
+		/**
+		 * An exception to indicate there was an attempt to edit a read-only image.
+		 * @since snapshot20171022
+		 */
 		class ImageIsReadOnlyException: public std::exception
 		{
 		public:
-			ImageIsReadOnlyException();
+			/**
+			 * The constructor of the exception.
+			 * @since snapshot20171022
+			 */
+			ImageIsReadOnlyException() {}
+
+			/**
+			 * The exception's message:
+			 * <em>There was an attempt to edit a read-only image!</em>
+			 * @since snapshot20171022
+			 */
 			virtual const char* what() const throw();
 		};
 
+		/**
+		 * An exception to indicate there was an attempt to read a write-only image.
+		 * @since snapshot20171022
+		 */
 		class ImageIsWriteOnlyException: public std::exception
 		{
 		public:
-			ImageIsWriteOnlyException();
+			/**
+			 * The contructor of the exception.
+			 * @since snapshot20171022
+			 */
+			ImageIsWriteOnlyException() {}
+
+			/**
+			 * The exception's message:
+			 * <em>There was an attemp to read a write-only image!</em>
+			 * @since snapshot20171022
+			 */
 			virtual const char* what() const throw();
 		};
 
-		class AFW_EXPORT Image
-		{
+		/**
+		 * A class representing an Image file. A class representing an Image file, allowing to read it's bytes
+		 * and/or creating/editing them.
+		 * @since snapshot20171022
+		 */
+		class AFW_EXPORT Image {
 		public:
+			/**
+			 * Constructs an image depending on the flags given.
+			 * @param fif The FREE_IMAGE_FORMAT (the image's extension) of the image.
+			 * @param path The path of an existing image or where to create a new image.
+			 * @param flags The ImageFlags intended for the image.
+			 * @param width The width of the image <em>(if you want to create an image)</em>.
+			 * @param height The height of the image <em>(if you want to create an image)</em>.
+			 * @param bpp The BPP (bits per pixel) of the image <em>(if you want to create an image)</em>.
+			 * @see ~Image()
+			 * @since snapshot20171022
+			 */
 			Image(FREE_IMAGE_FORMAT , const char* , ImageFlags = (ImageFlags::Read | ImageFlags::Write),
-			int = AFW_DONTCARE , int = AFW_DONTCARE , int = 24);
+			int = AFW_DONTCARE , int = AFW_DONTCARE , int = 32);
+
+			/**
+			 * Destructs an image.
+			 * @see Image()
+			 * @since snapshot20171022
+			 */
 			~Image();
 		
+			/**
+			 * Returns if the image is read-only.
+			 * @return <em>true</em> if the image is read-only. <em>false</em> otherwise.
+			 * @see isWriteOnly()
+			 * @see isReadAndWrite()
+			 * @since snapshot20171022
+			 */
 			bool isReadOnly() const;
+
+			/**
+			 * Returns if the image is write-only.
+			 * @return <em>true</em> if the image is write-only. <em>false</em> otherwise.
+			 * @see isReadOnly()
+			 * @see isReadAndWrite()
+			 * @since snapshot20171022
+			 */
 			bool isWriteOnly() const;
+
+			/**
+			 * Returns if the image is bot read and write.
+			 * @return <em>true</em> if the image is bot read and write. <em>false</em> otherwise.
+			 * @see isReadOnly()
+			 * @see isWriteOnly()
+			 * @since snapshot20171022
+			 */
 			bool isReadAndWrite() const;
 
+			/**
+			 * Returns if the BPP's of the image are 32 <em>(has alpha channel)</em>.
+			 * @return <em>true</em> if the image has 32 BPP. <em>false</em> otherwise.
+			 * @since snapshot20171022
+			 */
 			bool is32Bit() const;
+
+			/**
+			 * Converts an image to 32 BPP <em>(adds an alpha channel)</em>.
+			 * @throws ImageIsReadOnlyException In case the image is read-only.
+			 * @since snapshot20171022
+			 */
 			void convertTo32Bits();
 
+			/**
+			 * Sets the ImageFlags of the image to the given flags.
+			 * @param flags The ImageFlags to set this image to.
+			 * @see setReadOnly()
+			 * @see setWriteOnly()
+			 * @see setReadAndWrite()
+			 * @since snapshot20171022
+			 */
 			void setFlags(const ImageFlags );
+
+			/**
+			 * Sets the image to be read-only.
+			 * @see setFlags(const ImageFlags )
+			 * @see setWriteOnly()
+			 * @see setReadAndWrite()
+			 * @since snapshot20171022
+			 */
 			void setReadOnly();
+
+			/**
+			 * Sets the image to be write-only.
+			 * @see setFlags(const ImageFlags )
+			 * @see setReadOnly()
+			 * @see setReadAndWrite()
+			 * @since snapshot20171022
+			 */
 			void setWriteOnly();
+
+			/**
+			 * Sets the image to be read and write.
+			 * @see setFlags(const ImageFlags )
+			 * @see setReadOnly()
+			 * @see setWriteOnly()
+			 * @since snapshot20171022
+			 */
 			void setReadAndWrite();
 
+			/**
+			 * Sets the clear (background) pixel color.
+			 * @param color The GEngine::Color wanted.
+			 * @see clearPixel(int , int )
+			 * @see clearImage()
+			 * @since snapshot20171022
+			 */
 			void setClearPixelColor(const GEngine::Color& );
+
+			/**
+			 * Clears a pixel at the given coord's to the clear color.
+			 * @param x The x coordinate <em>(from left to right)</em>
+			 * @param y The y coordinate <em>(from bottom to top)</em>
+			 * @throws ImageIsReadOnlyException In case the image is read-only.
+			 * @see setClearPixelColor(const GEngine::Color& )
+			 * @see clearImage()
+			 * @since snapshot20171022
+			 */
 			void clearPixel(int , int );
+
+			/**
+			 * Clears the whole image to the clear color.
+			 * @throws ImageIsReadOnlyException In case the image is read-only.
+			 * @see setClearPixelColor(const GEngine::Color& )
+			 * @see clearPixel(int , int )
+			 * @since snapshot20171022
+			 */
 			void clearImage();
 
+			/**
+			 * Draws a pixel at the given coord's to the given color
+			 * @param x The x coordinate <em>(from left to right)</em>
+			 * @param y The y coordinate <em>(from bottom to top)</em>
+			 * @param color The GEngine::Color to draw the pixel to.
+			 * @throws ImageIsReadOnlyException In case the image is read-only.
+			 * @since snapshot20171022
+			 */
 			bool drawPixel(int , int , const GEngine::Color& );
 
+			/**
+			 * Saves an image to the path given in the constructor.
+			 * @throws ImageIsReadOnlyException In case the image is read-only.
+			 * @since snapshot20171022
+			 */
 			bool saveImage();
 			
 		private:
@@ -116,6 +321,7 @@ namespace AuroraFW {
 
 			static bool _freeImageInitialised;
 			FIBITMAP *_image;
+			GEngine::Color _clearColor = GEngine::Color(0xFFFFFF);
 			RGBQUAD _color;
 		};
 
@@ -137,7 +343,7 @@ namespace AuroraFW {
 
 		inline bool Image::is32Bit() const
 		{
-			return FreeImage_GetBPP(_image) == 32;
+			return _bpp == 32;
 		}
 
 		inline void Image::setFlags(const ImageFlags flags)
