@@ -143,11 +143,13 @@ namespace AuroraFW {
 			_color.rgbGreen = color.green();
 			_color.rgbBlue = color.blue();
 
-			if(color.alpha() != 255 && !is32Bit())
+			if(color.alpha() != 255 && !is32Bit()) {
 				CLI::Log(CLI::Warning, "There are alpha values in the supplied color, however the image is not 32-bit.",
 				"The alpha information will be lost. If you want to use alpha, first convert the image to 32-bit.");
-			else
+				_color.rgbReserved = 255;
+			} else {
 				_color.rgbReserved = color.alpha();
+			}
 
 			return FreeImage_SetPixelColor(_image, x, y, &_color);
 		}
