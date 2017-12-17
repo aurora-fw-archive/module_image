@@ -180,7 +180,7 @@ namespace AuroraFW {
 			 * @since snapshot20171022
 			 */
 			Image(FREE_IMAGE_FORMAT , const char* , ImageFlags = (ImageFlags::Read | ImageFlags::Write),
-			int = AFW_DONTCARE , int = AFW_DONTCARE , int = 32);
+			int = AFW_NULL , int = AFW_NULL , int = 32);
 
 			/**
 			 * Destructs an image.
