@@ -65,7 +65,7 @@ namespace AuroraFW {
 
 			if(_flags & ImageFlags::Read) {
 				// The user wants to read the file.
-				AuroraFW::Debug::Log("Read flag.");
+				AuroraFW::DebugManager::Log("Read flag.");
 				if(!_image) {
 					throw ImageNotFoundException(path);
 				}
@@ -78,9 +78,9 @@ namespace AuroraFW {
 					if(!_image) {
 						throw ImageAllocationFailedException(path);
 					}
-					AuroraFW::Debug::Log("Write flag: image didn't exist, space was allocated.");
+					AuroraFW::DebugManager::Log("Write flag: image didn't exist, space was allocated.");
 				} else {
-					AuroraFW::Debug::Log("Write flag: image existed.");
+					AuroraFW::DebugManager::Log("Write flag: image existed.");
 				}
 			}
 		}
@@ -88,7 +88,7 @@ namespace AuroraFW {
 		Image::~Image()
 		{
 			FreeImage_Unload(_image);
-			AuroraFW::Debug::Log("The image was deleted from memory.");
+			AuroraFW::DebugManager::Log("The image was deleted from memory.");
 		}
 
 		void Image::convertTo32Bits()
