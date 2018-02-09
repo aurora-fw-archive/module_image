@@ -180,7 +180,7 @@ namespace AuroraFW {
 			 * @since snapshot20171022
 			 */
 			Image(FREE_IMAGE_FORMAT , const char* , ImageFlags = (ImageFlags::Read | ImageFlags::Write),
-			int = AFW_NULL , int = AFW_NULL , int = 32);
+			int = AFW_NULLVAL , int = AFW_NULLVAL , int = 32);
 
 			/**
 			 * Destructs an image.
@@ -188,7 +188,7 @@ namespace AuroraFW {
 			 * @since snapshot20171022
 			 */
 			~Image();
-		
+
 			/**
 			 * Returns if the image is read-only.
 			 * @return <em>true</em> if the image is read-only. <em>false</em> otherwise.
@@ -312,7 +312,7 @@ namespace AuroraFW {
 			 * @since snapshot20171022
 			 */
 			bool saveImage();
-			
+
 		private:
 			FREE_IMAGE_FORMAT _fif;
 			const char *_path;
