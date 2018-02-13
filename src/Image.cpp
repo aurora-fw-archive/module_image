@@ -121,17 +121,17 @@ namespace AuroraFW {
 
 		void Image::setClearPixelColor(const GEngine::Color& color)
 		{
-			// TODO: Implement
+			#pragma message ("TODO: Need to be implemented")
 		}
 
 		void Image::clearPixel(int x, int y)
 		{
-			// TODO: Implement
+			#pragma message ("TODO: Need to be implemented")
 		}
 
 		void Image::clearImage()
 		{
-			// TODO: Implement
+			#pragma message ("TODO: Need to be implemented")
 		}
 
 		bool Image::drawPixel(int x, int y, const GEngine::Color& color)
