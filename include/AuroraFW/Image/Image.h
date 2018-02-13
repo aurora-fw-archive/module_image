@@ -166,7 +166,7 @@ namespace AuroraFW {
 		 * and/or creating/editing them.
 		 * @since snapshot20171022
 		 */
-		class AFW_EXPORT Image {
+		class AFW_API Image {
 		public:
 			/**
 			 * Constructs an image depending on the flags given.
