@@ -30,6 +30,6 @@ include_directories(${AURORAFW_MODULE_IMAGE_DIR}/include ${FreeImage_INCLUDE_DIR
 
 add_library (aurorafw-image SHARED ${AURORAFW_MODULE_IMAGE_SOURCE_DIR}/Image.cpp)
 
-target_link_libraries(aurorafw-image aurorafw-cli aurorafw-gengine-core aurorafw-core freeimage)
+target_link_libraries(aurorafw-image aurorafw-cli aurorafw-gengine-core aurorafw-core ${FreeImage_LIBRARIES})
 
 set_target_properties(aurorafw-image PROPERTIES OUTPUT_NAME aurorafw-image)
