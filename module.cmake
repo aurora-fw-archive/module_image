@@ -17,7 +17,7 @@
 message(STATUS "Loading image module...")
 
 IF(DEFINED AURORAFW_IS_BUILDING)
-	AURORA_ADD_CMAKE_MODULE("FreeImage" CMAKE ${AURORAFW_ROOT_DIR}/cmake/freeimage)
+	AURORAFW_ADD_CMAKE_MODULE("FreeImage" CMAKE ${AURORAFW_ROOT_DIR}/cmake/freeimage)
 ELSE()
 	find_package(FreeImage REQUIRED)
 ENDIF()
