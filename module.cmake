@@ -28,8 +28,10 @@ endif()
 
 include_directories(${AURORAFW_MODULE_IMAGE_DIR}/include ${FreeImage_INCLUDE_DIR})
 
-add_library (aurorafw-image SHARED ${AURORAFW_MODULE_IMAGE_SOURCE_DIR}/Image.cpp)
+file(GLOB_RECURSE AURORAFW_MODULE_IMAGE_SOURCE ${AURORAFW_MODULE_IMAGE_SOURCE_DIR}/*.*)
 
-target_link_libraries(aurorafw-image aurorafw-cli aurorafw-gengine-core aurorafw-core ${FreeImage_LIBRARIES})
+add_library (aurorafw-image SHARED ${AURORAFW_MODULE_IMAGE_SOURCE})
+
+target_link_libraries(aurorafw-image ${FreeImage_LIBRARIES})
 
 set_target_properties(aurorafw-image PROPERTIES OUTPUT_NAME aurorafw-image)
