@@ -119,7 +119,7 @@ namespace AuroraFW {
 			_flags = _flags | (ImageFlags::Read | ImageFlags::Write);
 		}
 
-		void Image::setClearPixelColor(const GEngine::Color& color)
+		void Image::setClearPixelColor(const Color& color)
 		{
 			#pragma message ("TODO: Need to be implemented")
 		}
@@ -134,7 +134,7 @@ namespace AuroraFW {
 			#pragma message ("TODO: Need to be implemented")
 		}
 
-		bool Image::drawPixel(int x, int y, const GEngine::Color& color)
+		bool Image::drawPixel(int x, int y, const Color& color)
 		{
 			if(isReadOnly())
 				throw ImageIsReadOnlyException();

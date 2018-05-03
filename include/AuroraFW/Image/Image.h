@@ -29,7 +29,7 @@
 #include <AuroraFW/Global.h>
 #include <AuroraFW/CLI/Log.h>
 #include <AuroraFW/STDL/STL/IOStream.h>
-#include <AuroraFW/GEngine/Color.h>
+#include <AuroraFW/Image/BaseColor.h>
 
 #include <exception>
 #include <FreeImage.h>
@@ -269,19 +269,19 @@ namespace AuroraFW {
 
 			/**
 			 * Sets the clear (background) pixel color.
-			 * @param color The GEngine::Color wanted.
+			 * @param color The Color wanted.
 			 * @see clearPixel(int , int )
 			 * @see clearImage()
 			 * @since snapshot20171022
 			 */
-			void setClearPixelColor(const GEngine::Color& );
+			void setClearPixelColor(const Color& );
 
 			/**
 			 * Clears a pixel at the given coord's to the clear color.
 			 * @param x The x coordinate <em>(from left to right)</em>
 			 * @param y The y coordinate <em>(from bottom to top)</em>
 			 * @throws ImageIsReadOnlyException In case the image is read-only.
-			 * @see setClearPixelColor(const GEngine::Color& )
+			 * @see setClearPixelColor(const Color& )
 			 * @see clearImage()
 			 * @since snapshot20171022
 			 */
@@ -290,7 +290,7 @@ namespace AuroraFW {
 			/**
 			 * Clears the whole image to the clear color.
 			 * @throws ImageIsReadOnlyException In case the image is read-only.
-			 * @see setClearPixelColor(const GEngine::Color& )
+			 * @see setClearPixelColor(const Color& )
 			 * @see clearPixel(int , int )
 			 * @since snapshot20171022
 			 */
@@ -300,11 +300,11 @@ namespace AuroraFW {
 			 * Draws a pixel at the given coord's to the given color
 			 * @param x The x coordinate <em>(from left to right)</em>
 			 * @param y The y coordinate <em>(from bottom to top)</em>
-			 * @param color The GEngine::Color to draw the pixel to.
+			 * @param color The Color to draw the pixel to.
 			 * @throws ImageIsReadOnlyException In case the image is read-only.
 			 * @since snapshot20171022
 			 */
-			bool drawPixel(int , int , const GEngine::Color& );
+			bool drawPixel(int , int , const Color& );
 
 			/**
 			 * Saves an image to the path given in the constructor.
@@ -321,7 +321,7 @@ namespace AuroraFW {
 
 			static bool _freeImageInitialised;
 			FIBITMAP *_image;
-			GEngine::Color _clearColor = GEngine::Color(0xFFFFFF);
+			Color _clearColor = Color(0xFFFFFF);
 			RGBQUAD _color;
 		};
 
